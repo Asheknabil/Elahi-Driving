@@ -1,0 +1,35 @@
+.ham-btn {
+  cursor: pointer;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s ease;
+}
+
+.ham-btn i {
+  font-size: 28px;
+  position: absolute;
+  transition: 0.3s ease;
+}
+
+.ham-btn .close {
+  transform: rotate(-90deg);
+  opacity: 0;
+}
+
+.ham-btn.active .open {
+  transform: rotate(90deg);
+  opacity: 0;
+}
+
+.ham-btn.active .close {
+  transform: rotate(0deg);
+  opacity: 1;
+}
+
+.no-bg {
+  background: transparent !important;
+  border: none !important;
+}
