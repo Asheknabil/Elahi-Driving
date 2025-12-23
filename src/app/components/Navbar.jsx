@@ -9,7 +9,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="w-full bg-white border-b px-3 py-[6px]">
+    <header className="w-full bg-white border-b px-30 py-[6px]">
       <nav className="relative h-[70px] flex items-center justify-between">
 
         {/* LEFT LINKS — DESKTOP */}

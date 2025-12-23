@@ -1,14 +1,65 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 export default function Hero() {
+  // --- SLIDER DATA ---
+  const slides = [
+    {
+      title: "Performance",
+      subtitle: "Engine Power",
+      img: "/images/hero.png",
+      desc:
+        "Experience unmatched performance with powerful engine dynamics designed for smooth and fast driving.",
+    },
+    {
+      title: "Design",
+      subtitle: "Modern Look",
+      img: "/images/hero.png",
+      desc:
+        "Aesthetic, minimal, and modern design elements crafted to perfection for a premium feel.",
+    },
+    {
+      title: "Technology",
+      subtitle: "Smart Systems",
+      img: "/images/hero.png",
+      desc:
+        "Equipped with intelligent technology systems to make your experience smarter and easier.",
+    },
+    {
+      title: "Comfort",
+      subtitle: "Luxury Interior",
+      img: "/images/hero.png",
+      desc:
+        "Premium comfort with luxurious interior features to make every ride relaxing.",
+    },
+    {
+      title: "Safety",
+      subtitle: "Advanced Control",
+      img: "/images/hero.png",
+      desc:
+        "Advanced safety and control features to keep every journey secure and confident.",
+    },
+  ];
+
+  const [current, setCurrent] = useState(0);
+
+  // --- AUTO SLIDE ---
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % slides.length);
+    }, 3500); // 3.5 sec
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <section className="w-full bg-white py-8 min-h-[65vh]">
-      <div className="max-w-7xl mx-auto px-4 h-full">
+    <section className="w-full bg-white py-8 min-h-[5vh]">
+      <div className="max-w-9xl mx-auto px-4 h-full">
         <div className="grid grid-cols-10 items-center h-full">
 
-          {/* LEFT — FULL HEIGHT ROTATED TEXT */}
+          {/* LEFT ROTATED TEXT  */}
           <div className="hidden lg:flex col-span-2 h-full items-center justify-center">
             <span className="rotate-[-90deg] text-gray-300 text-[180px] font-extrabold tracking-[0.5em] leading-none">
               ELAHI
@@ -22,15 +73,16 @@ export default function Hero() {
               Explore the Art of
             </p>
 
-            <h1 className="text-5xl md:text-7xl font-extrabold  my-4 tracking-[0.2em]">
-              ELAHI
+            <h1 className="text-5xl md:text-7xl font-extrabold my-4 tracking-[0.2em]">
+              {slides[current].title}
             </h1>
 
             {/* IMAGE */}
-            <div className="flex justify-center my-8">
+            <div className="flex justify-center my-8 transition-all duration-500">
               <Image
-                src="/images/hero.png"
-                alt="Hero Image"
+                key={current}
+                src={slides[current].img}
+                alt="Hero"
                 width={650}
                 height={360}
                 priority
@@ -39,11 +91,8 @@ export default function Hero() {
             </div>
 
             {/* DESCRIPTION */}
-            <p className="max-w-2xl mx-auto text-gray-600 text-sm md:text-base leading-relaxed">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
+            <p className="max-w-2xl mx-auto text-gray-600 text-sm md:text-base leading-relaxed transition-all duration-300">
+              {slides[current].desc}
             </p>
 
             {/* BUTTONS */}
@@ -58,27 +107,26 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* RIGHT — ROTATED FEATURE LIST (STACKED) */}
+          {/* RIGHT SIDE — ROTATED BUTTON LIST */}
           <div className="hidden lg:flex col-span-2 h-full items-center justify-center">
-            <div className="flex flex-col gap-20 text-gray-500 text-sm text-left">
-                <p className="rotate-90">
-                Performance <br /> Engine Power
-                </p>
-                <p className="rotate-90">
-                Design <br /> Modern Look
-                </p>
-                <p className="rotate-90">
-                Technology <br /> Smart Systems
-                </p>
-                <p className="rotate-90">
-                Comfort <br /> Luxury Interior
-                </p>
-                <p className="rotate-90">
-                Safety <br /> Advanced Control
-                </p>
-            </div>
-        </div>
+            <div className="flex flex-col gap-10 text-gray-500 text-sm text-left">
 
+              {slides.map((item, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrent(idx)}
+                  className={`rotate-90 cursor-pointer transition font-medium ${
+                    current === idx
+                      ? "text-red-600 font-bold"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
+                >
+                  {item.title} <br /> {item.subtitle}
+                </button>
+              ))}
+
+            </div>
+          </div>
 
         </div>
       </div>
