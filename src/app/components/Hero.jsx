@@ -45,9 +45,8 @@ export default function Hero() {
       setCurrent((prev) => (prev + 1) % slides.length);
     }, 3500);
 
-    // কম্পোনেন্ট আনমাউন্ট হলে ইন্টারভাল ক্লিয়ার করা
     return () => clearInterval(timer);
-  }, [slides.length]); // ডিপেন্ডেন্সি অ্যারে ফিক্সড রাখা হয়েছে
+  }, [slides.length]);
 
   return (
     <section className="w-full bg-white py-12 overflow-hidden">

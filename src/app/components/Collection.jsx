@@ -6,35 +6,55 @@ import { useState } from 'react';
 
 export default function CollectionSlider() {
 
-  const [currentIndex, setCurrentIndex] = useState(1);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
 
 
-  const collections = [
-    {
-      id: 1,
-      title: "Luxury Sedans",
-      image: "/public/images/collect1.png",
-      description: "Experience unparalleled comfort and sophistication in our luxury sedan collection.",
-    },
-    {
-      id: 2,
-      title: "Powerful SUVs",
-      image: "/public/images/collect2.png",
-      description: "Dominate any terrain with our powerful and versatile SUV lineup.",
-    },
-    {
-      id: 3,
-      title: "Exquisite Coupes",
-      image: "/public/images/collect3.png",
-      description: "Turn heads with our sleek and performance-oriented coupe models.",
-    },
-    {
-      id: 4,
-      title: "Electric Vehicles",
-      image: "/public/images/collect4.png",
-      description: "Embrace the future with our eco-friendly and high-tech electric vehicles.",
-    },
-  ];
+const collections = [
+  {
+    id: 1,
+    title: "Luxury Sedans",
+    image: "/images/collect1.png",
+    description: "Experience unparalleled comfort and sophistication in our luxury sedan collection.",
+  },
+  {
+    id: 2,
+    title: "Powerful SUVs",
+    image: "/images/collect2.png",
+    description: "Dominate any terrain with our powerful and versatile SUV lineup.",
+  },
+  {
+    id: 3,
+    title: "Exquisite Coupes",
+    image: "/images/collect3.png",
+    description: "Turn heads with our sleek and performance-oriented coupe models.",
+  },
+  {
+    id: 4,
+    title: "Electric Vehicles",
+    image: "/images/collect4.png",
+    description: "Embrace the future with our eco-friendly and high-tech electric vehicles.",
+  },
+  {
+    id: 5,
+    title: "Sports Cars",
+    image: "/images/collect1.png",
+    description: "Feel the adrenaline rush with our high-performance sports car collection.",
+  },
+  {
+    id: 6,
+    title: "Hybrid Models",
+    image: "/images/collect2.png",
+    description: "Experience the perfect blend of efficiency and power with our hybrid vehicles.",
+  },
+  {
+    id: 7,
+    title: "Convertibles",
+    image: "/images/collect3.png",
+    description: "Enjoy the open road with our stunning convertible car collection.",
+  },
+];
+
 
   const handlePrevious = () => {
     setCurrentIndex((prev) => (prev === 0 ? collections.length - 1 : prev - 1));
@@ -48,32 +68,35 @@ export default function CollectionSlider() {
     const cards = [];
     const totalCards = collections.length;
     
-    // Calculate which cards to show (always show 3 cards)
-    for (let i = -1; i <= 1; i++) {
-      let index = currentIndex + i;
-      if (index < 0) index = totalCards + index;
-      if (index >= totalCards) index = index % totalCards;
-      cards.push(collections[index]);
-    }
+    if (totalCards === 0) return [];
+    
+    // Center card (active)
+    const centerIndex = currentIndex % totalCards;
+    // Left card (previous - last card wraps to first)
+    const leftIndex = (currentIndex - 1 + totalCards) % totalCards;
+    // Right card (next)
+    const rightIndex = (currentIndex + 1) % totalCards;
+    
+    cards.push({ ...collections[leftIndex], position: -1 });
+    cards.push({ ...collections[centerIndex], position: 0 });
+    cards.push({ ...collections[rightIndex], position: 1 });
     
     return cards;
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-8 md:p-12 relative overflow-hidden">
-      {/* Main content container */}
-      <div className="max-w-7xl mx-auto">
-        {/* Header section */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 md:mb-24">
-          <div className="mb-8 md:mb-0">
-            {/* Round background text */}
+    <div className="bg-black text-white p-8 md:p-12 relative overflow-hidden">
+      
+      <div className="max-w-7xl mx-auto py-8">
+        
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 md:mb-12">
+          <div className="mb-8 md:mb-0 ml-72">
+            
             <div className="relative inline-block">
-              <div className="absolute -inset-4 bg-gradient-to-r from-gray-800 to-gray-900 rounded-full blur-md opacity-80"></div>
-              <div className="relative bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-full px-8 py-4 border border-gray-800">
-                <h1 className="text-3xl md:text-4xl font-light tracking-wider">
-                  Explore Our Collection
-                </h1>
-              </div>
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-wider">
+                <span className="bg-red-600 rounded-full px-20 py-20 -mr-9 inline-block"></span>
+                <span className="absolute whitespace-nowrap mt-14 -ml-12">Explore Our Collection</span>
+              </h1>
             </div>
           </div>
           
@@ -97,57 +120,64 @@ export default function CollectionSlider() {
         </div>
 
         {/* Main content - Image and Cards */}
-        <div className="relative flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-16">
-          {/* Left side - Main Image */}
-          <div className="w-full lg:w-2/3 relative">
-            <div className="relative h-[400px] md:h-[500px] rounded-2xl overflow-hidden">
-              {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent z-10"></div>
-              
-              {/* Main image */}
-              <Image
-                src="/images/collect(1).png"
-                alt={collections[currentIndex].title}
-                fill
-                className="object-cover transition-transform duration-500"
-                priority
-              />
-              
-              {/* Image overlay content */}
-              <div className="absolute bottom-8 left-8 z-20">
-                <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                  {collections[currentIndex].title}
-                </h2>
-                <p className="text-gray-300 max-w-md">
-                  {collections[currentIndex].description}
-                </p>
-              </div>
+        <div className="relative flex flex-col items-center gap-8">
+          {/* Center - Main Image */}
+          <div className="w-full max-w-5xl mx-auto relative overflow-hidden">
+            <div className="flex transition-transform duration-700 ease-in-out" style={{ transform: `translateX(${-currentIndex * 100}%)` }}>
+              {collections.map((collection) => (
+                <div key={collection.id} className="w-full flex-shrink-0">
+                  <div className="relative h-[350px] md:h-[450px] rounded-2xl overflow-hidden">
+                    {/* Gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent z-10"></div>
+                    
+                    {/* Main image */}
+                    <Image
+                      src={collection.image}
+                      alt={collection.title}
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+
+                    
+                    {/* Image overlay content */}
+                    <div className="absolute bottom-8 left-8 z-20">
+                      <h2 className="text-4xl md:text-5xl font-bold mb-4">
+                        {collection.title}
+                      </h2>
+                      <p className="text-gray-300 max-w-md">
+                        {collection.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Right side - Cards Slider */}
-          <div className="w-full lg:w-1/3 relative">
+          {/* Bottom - Cards Slider */}
+          <div className="w-full relative">
             {/* Vertical "Collection" text */}
-            <div className="hidden lg:block absolute -right-8 top-1/2 transform -translate-y-1/2 rotate-90 origin-center">
-              <span className="text-7xl font-bold tracking-widest text-gray-800 opacity-80">
+            <div className="hidden lg:block absolute ml-[880px] -mt-56 font-sans origin-center" style={{ transform: 'rotate(90deg) scaleY(2.5)' }}>
+              <span className="text-8xl font-extrabold tracking-widest text-[110px] text-gray-300 opacity-30">
                 COLLECTION
               </span>
             </div>
 
             {/* Cards Container */}
-            <div className="relative h-[500px]">
-              {getVisibleCards().map((card, index) => {
-                const isSelected = index === 1; // Middle card is selected
+            <div className="relative h-[300px] flex items-center justify-center">
+              {getVisibleCards().map((card) => {
+                const isSelected = card.position === 0;
                 
                 return (
                   <div
-                    key={card.id}
-                    className={`absolute transition-all duration-500 w-full ${
-                      index === 0 
-                        ? 'left-0 top-0 scale-90 opacity-60 z-10' 
-                        : index === 1 
-                        ? 'left-0 top-1/2 transform -translate-y-1/2 scale-100 opacity-100 z-20'
-                        : 'left-0 top-full transform -translate-y-full scale-90 opacity-60 z-10'
+                    key={`${card.id}-${card.position}`}
+                    className={`absolute transition-all duration-700 ease-in-out w-80 ${
+                      card.position === -1
+                        ? 'left-[10%] scale-90 opacity-60 z-10' 
+                        : card.position === 0
+                        ? 'left-1/2 transform -translate-x-1/2 scale-100 opacity-100 z-20'
+                        : 'right-[10%] scale-90 opacity-60 z-10'
                     }`}
                   >
                     <div className={`p-6 rounded-2xl transition-all duration-500 ${
