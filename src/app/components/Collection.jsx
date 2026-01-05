@@ -20,37 +20,37 @@ const collections = [
   {
     id: 2,
     title: "Powerful SUVs",
-    image: "/images/collect2.png",
+    image: "/images/collect22.png",
     description: "Dominate any terrain with our powerful and versatile SUV lineup.",
   },
   {
     id: 3,
     title: "Exquisite Coupes",
-    image: "/images/collect3.png",
+    image: "/images/collect6.png",
     description: "Turn heads with our sleek and performance-oriented coupe models.",
   },
   {
     id: 4,
     title: "Electric Vehicles",
-    image: "/images/collect4.png",
+    image: "/images/collect5.png",
     description: "Embrace the future with our eco-friendly and high-tech electric vehicles.",
   },
   {
     id: 5,
     title: "Sports Cars",
-    image: "/images/collect1.png",
+    image: "/images/collect8.png",
     description: "Feel the adrenaline rush with our high-performance sports car collection.",
   },
   {
     id: 6,
     title: "Hybrid Models",
-    image: "/images/collect2.png",
+    image: "/images/collect7.png",
     description: "Experience the perfect blend of efficiency and power with our hybrid vehicles.",
   },
   {
     id: 7,
     title: "Convertibles",
-    image: "/images/collect3.png",
+    image: "/images/collect9.png",
     description: "Enjoy the open road with our stunning convertible car collection.",
   },
 ];
@@ -70,11 +70,8 @@ const collections = [
     
     if (totalCards === 0) return [];
     
-    // Center card (active)
     const centerIndex = currentIndex % totalCards;
-    // Left card (previous - last card wraps to first)
     const leftIndex = (currentIndex - 1 + totalCards) % totalCards;
-    // Right card (next)
     const rightIndex = (currentIndex + 1) % totalCards;
     
     cards.push({ ...collections[leftIndex], position: -1 });
@@ -119,18 +116,14 @@ const collections = [
           </div>
         </div>
 
-        {/* Main content - Image and Cards */}
         <div className="relative flex flex-col items-center gap-8">
-          {/* Center - Main Image */}
           <div className="w-full max-w-5xl mx-auto relative overflow-hidden">
             <div className="flex transition-transform duration-700 ease-in-out" style={{ transform: `translateX(${-currentIndex * 100}%)` }}>
               {collections.map((collection) => (
                 <div key={collection.id} className="w-full flex-shrink-0">
                   <div className="relative h-[350px] md:h-[450px] rounded-2xl overflow-hidden">
-                    {/* Gradient overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent z-10"></div>
                     
-                    {/* Main image */}
                     <Image
                       src={collection.image}
                       alt={collection.title}
@@ -138,9 +131,7 @@ const collections = [
                       className="object-cover"
                       priority
                     />
-
                     
-                    {/* Image overlay content */}
                     <div className="absolute bottom-8 left-8 z-20">
                       <h2 className="text-4xl md:text-5xl font-bold mb-4">
                         {collection.title}
@@ -155,16 +146,13 @@ const collections = [
             </div>
           </div>
 
-          {/* Bottom - Cards Slider */}
           <div className="w-full relative">
-            {/* Vertical "Collection" text */}
             <div className="hidden lg:block absolute ml-[880px] -mt-56 font-sans origin-center" style={{ transform: 'rotate(90deg) scaleY(2.5)' }}>
               <span className="text-8xl font-extrabold tracking-widest text-[110px] text-gray-300 opacity-30">
                 COLLECTION
               </span>
             </div>
 
-            {/* Cards Container */}
             <div className="relative h-[300px] flex items-center justify-center">
               {getVisibleCards().map((card) => {
                 const isSelected = card.position === 0;
@@ -229,15 +217,6 @@ const collections = [
         </div>
       </div>
 
-      {/* Background decorative elements */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-        {/* Grid pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
-        
-        {/* Gradient orbs */}
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-900/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-900/5 rounded-full blur-3xl"></div>
-      </div>
     </div>
   );
 }
