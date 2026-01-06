@@ -9,6 +9,10 @@ export default function CollectionSlider() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
 
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [step, setStep] = useState(0);
+
+
 
 const collections = [
   {
@@ -56,13 +60,49 @@ const collections = [
 ];
 
 
-  const handlePrevious = () => {
-    setCurrentIndex((prev) => (prev === 0 ? collections.length - 1 : prev - 1));
-  };
+const handlePrevious = () => {
+  setDirection(-1);
+  setCurrentIndex((prev) => (prev === 0 ? collections.length - 1 : prev - 1));
+};
 
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev === collections.length - 1 ? 0 : prev + 1));
-  };
+const handleNext = () => {
+  if (isAnimating) return;
+
+  setIsAnimating(true);
+  setStep(1); // step 1: center exits
+
+  setTimeout(() => {
+    setStep(2); // step 2: right → center
+  }, 200);
+
+  setTimeout(() => {
+    setStep(3); // step 3: hidden → right
+  }, 400);
+
+  setTimeout(() => {
+    setCurrentIndex((prev) =>
+      prev === collections.length - 1 ? 0 : prev + 1
+    );
+    setStep(0);
+    setIsAnimating(false);
+  }, 650);
+};
+
+const getCardStyle = (position) => {
+  if (step === 0) return '';
+
+  if (step === 1 && position === 0)
+    return 'translate-x-[-120%] opacity-0';
+
+  if (step === 2 && position === 1)
+    return 'translate-x-[-110%]';
+
+  if (step === 3 && position === 2)
+    return 'translate-x-[-110%]';
+
+  return '';
+};
+
 
   const getVisibleCards = () => {
     const cards = [];
@@ -117,7 +157,7 @@ const collections = [
         </div>
 
         <div className="relative flex flex-col items-center gap-8">
-          <div className="w-full max-w-5xl mx-auto relative overflow-hidden">
+          <div className="w-full max-w-3xl mx-auto relative overflow-hidden">
             <div className="flex transition-transform duration-700 ease-in-out" style={{ transform: `translateX(${-currentIndex * 100}%)` }}>
               {collections.map((collection) => (
                 <div key={collection.id} className="w-full flex-shrink-0">
@@ -160,14 +200,17 @@ const collections = [
                 return (
                   <div
                     key={`${card.id}-${card.position}`}
-                    className={`absolute transition-all duration-700 ease-in-out w-80 ${
-                      card.position === -1
-                        ? 'left-[10%] scale-90 opacity-60 z-10' 
+                    className={`absolute w-80 transition-all duration-300 ease-in-out
+                      ${card.position === -1
+                        ? 'left-[10%] scale-90 opacity-60 z-10'
                         : card.position === 0
-                        ? 'left-1/2 transform -translate-x-1/2 scale-100 opacity-100 z-20'
+                        ? 'left-1/2 -translate-x-1/2 scale-100 opacity-100 z-20'
                         : 'right-[10%] scale-90 opacity-60 z-10'
-                    }`}
+                      }
+                      ${getCardStyle(card.position)}
+                    `}
                   >
+
                     <div className={`p-6 rounded-2xl transition-all duration-500 ${
                       isSelected 
                         ? 'bg-gradient-to-br from-gray-900 to-black border-2 border-gray-700 shadow-2xl' 
