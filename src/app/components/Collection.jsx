@@ -69,14 +69,14 @@ const handleNext = () => {
   if (isAnimating) return;
 
   setIsAnimating(true);
-  setStep(1); // step 1: center exits
+  setStep(1);
 
   setTimeout(() => {
-    setStep(2); // step 2: right → center
+    setStep(2);
   }, 200);
 
   setTimeout(() => {
-    setStep(3); // step 3: hidden → right
+    setStep(3);
   }, 400);
 
   setTimeout(() => {
