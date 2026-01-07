@@ -127,12 +127,12 @@ const getCardStyle = (position) => {
       <div className="max-w-7xl mx-auto py-8">
         
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 md:mb-12">
-          <div className="mb-8 md:mb-0 ml-72">
+          <div className="mb-8 md:mb-0 ml-0 md:ml-72">
             
             <div className="relative inline-block">
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-wider">
-                <span className="bg-red-600 rounded-full px-20 py-20 -mr-9 inline-block"></span>
-                <span className="absolute whitespace-nowrap mt-14 -ml-12">Explore Our Collection</span>
+                <span className="hidden md:inline-block bg-red-600 rounded-full px-20 py-20 -mr-9"></span>
+                <span className="block md:absolute md:whitespace-nowrap lg:-mt-28 lg:ml-18 mx-auto">Explore Our Collection</span>
               </h1>
             </div>
           </div>
